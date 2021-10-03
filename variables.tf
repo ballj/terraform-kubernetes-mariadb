@@ -28,7 +28,7 @@ variable "image_name" {
 variable "image_tag" {
   type        = string
   description = "Docker image tag to use"
-  default     = "10.5.8-debian-10-r21"
+  default     = "10.6.4-debian-10-r9"
 }
 
 variable "timeout_create" {
