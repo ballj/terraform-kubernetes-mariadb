@@ -33,3 +33,8 @@ output "username" {
     kubernetes_stateful_set.mariadb
   ]
 }
+
+output "type" {
+  description = "Type of database deployed"
+  value       = "mysql"
+}
