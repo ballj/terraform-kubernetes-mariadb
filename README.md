@@ -34,6 +34,10 @@ module "mariadb" {
 | `timeout_create`                  | No       | `3m`                        | Timeout for creating the statefulset               |
 | `timeout_update`                  | No       | `3m`                        | Timeout for updating the statefulset               |
 | `timeout_delete`                  | No       | `10m`                       | Timeout for deleting the statefulset               |
+| `resources_requests_cpu`          | No       | `null`                      | The minimum amount of compute resources required   |
+| `resources_requests_memory`       | No       | `null`                      | The minimum amount of compute resources required   |
+| `resources_limits_cpu`            | No       | `null`                      | The maximum amount of compute resources allowed    |
+| `resources_limits_memory`         | No       | `null`                      | The maximum amount of compute resources allowed    |
 | `replicas`                        | No       | `1`                         | Amount of pods to deploy as part of deployment     |
 | `wait_for_rollout`                | No       | `true`                      | Wait for the StatefulSet to finish rolling out     |
 | `pod_management_policy`           | No       | `OrderedReady`              | Controls how pods are created during scaling       |
