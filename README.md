@@ -31,8 +31,8 @@ module "mariadb" {
 | `labels`                          | No       | N/A                         | Common labels to add to all objects - See example  |
 | `image_name`                      | No       | N/A                         | Image to deploy as part of deployment              |
 | `image_tag`                       | No       | N/A                         | Image tag to deploy                                |
-| `timeout_create`                  | No       | `3m`                        | Timeout for creating the statefulset               |
-| `timeout_update`                  | No       | `3m`                        | Timeout for updating the statefulset               |
+| `timeout_create`                  | No       | `4m`                        | Timeout for creating the statefulset               |
+| `timeout_update`                  | No       | `4m`                        | Timeout for updating the statefulset               |
 | `timeout_delete`                  | No       | `10m`                       | Timeout for deleting the statefulset               |
 | `resources_requests_cpu`          | No       | `null`                      | The minimum amount of compute resources required   |
 | `resources_requests_memory`       | No       | `null`                      | The minimum amount of compute resources required   |
@@ -55,23 +55,23 @@ module "mariadb" {
 | `env`                             | No       | `{}`                        | Environment variables to add                       |
 | `env_secret`                      | No       | `[]`                        | Environmentvariables to add from secrets           |
 | `readiness_probe_enabled`         | No       | `true`                      | Enable the readyness probe                         |
-| `readiness_probe_initial_delay`   | No       | `30`                        | Initial delay of the probe in seconds              |
+| `readiness_probe_initial_delay`   | No       | `10`                        | Initial delay of the probe in seconds              |
 | `readiness_probe_period`          | No       | `10`                        | Period of the probe in seconds                     |
 | `readiness_probe_timeout`         | No       | `1`                         | Timeout of the probe in seconds                    |
 | `readiness_probe_success`         | No       | `1`                         | Minimum consecutive successes for the probe        |
 | `readiness_probe_failure`         | No       | `3`                         | Minimum consecutive failures for the probe         |
 | `liveness_probe_enabled`          | No       | `true`                      | Enable the readyness probe                         |
-| `liveness_probe_initial_delay`    | No       | `30`                        | Initial delay of the probe in seconds              |
+| `liveness_probe_initial_delay`    | No       | `10`                        | Initial delay of the probe in seconds              |
 | `liveness_probe_period`           | No       | `10`                        | Period of the probe in seconds                     |
 | `liveness_probe_timeout`          | No       | `1`                         | Timeout of the probe in seconds                    |
 | `liveness_probe_success`          | No       | `1`                         | Minimum consecutive successes for the probe        |
 | `liveness_probe_failure`          | No       | `3`                         | Minimum consecutive failures for the probe         |
 | `startup_probe_enabled`           | No       | `true`                      | Enable the readyness probe                         |
 | `startup_probe_initial_delay`     | No       | `30`                        | Initial delay of the probe in seconds              |
-| `startup_probe_period`            | No       | `10`                        | Period of the probe in seconds                     |
+| `startup_probe_period`            | No       | `1`                         | Period of the probe in seconds                     |
 | `startup_probe_timeout`           | No       | `1`                         | Timeout of the probe in seconds                    |
 | `startup_probe_success`           | No       | `1`                         | Minimum consecutive successes for the probe        |
-| `startup_probe_failure`           | No       | `3`                         | Minimum consecutive failures for the probe         |
+| `startup_probe_failure`           | No       | `180`                       | Minimum consecutive failures for the probe         |
 
 ### Service Variables
 

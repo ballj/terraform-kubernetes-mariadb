@@ -34,13 +34,13 @@ variable "image_tag" {
 variable "timeout_create" {
   type        = string
   description = "Timeout for creating the statefulset"
-  default     = "3m"
+  default     = "4m"
 }
 
 variable "timeout_update" {
   type        = string
   description = "Timeout for creating the statefulset"
-  default     = "2m"
+  default     = "4m"
 }
 
 variable "timeout_delete" {
@@ -224,7 +224,7 @@ variable "readiness_probe_enabled" {
 variable "readiness_probe_initial_delay" {
   type        = number
   description = "Initial delay of the probe in seconds"
-  default     = 30
+  default     = 10
 }
 
 variable "readiness_probe_period" {
@@ -260,7 +260,7 @@ variable "liveness_probe_enabled" {
 variable "liveness_probe_initial_delay" {
   type        = number
   description = "Initial delay of the probe in seconds"
-  default     = 30
+  default     = 10
 }
 
 variable "liveness_probe_period" {
@@ -302,7 +302,7 @@ variable "startup_probe_initial_delay" {
 variable "startup_probe_period" {
   type        = number
   description = "Period of the probe in seconds"
-  default     = 10
+  default     = 1
 }
 
 variable "startup_probe_timeout" {
@@ -320,5 +320,5 @@ variable "startup_probe_success" {
 variable "startup_probe_failure" {
   type        = number
   description = "Minimum consecutive failures for the probe to be considered failed after having succeeded"
-  default     = 3
+  default     = 180
 }
