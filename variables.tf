@@ -31,6 +31,12 @@ variable "image_tag" {
   default     = "10.6.4-debian-10-r9"
 }
 
+variable "service_account_name" {
+  type        = string
+  description = "Service account name to add to the pod"
+  default     = ""
+}
+
 variable "timeout_create" {
   type        = string
   description = "Timeout for creating the statefulset"

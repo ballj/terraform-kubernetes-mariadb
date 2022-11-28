@@ -31,6 +31,7 @@ module "mariadb" {
 | `labels`                          | No       | N/A                         | Common labels to add to all objects - See example  |
 | `image_name`                      | No       | N/A                         | Image to deploy as part of deployment              |
 | `image_tag`                       | No       | N/A                         | Image tag to deploy                                |
+| `service_account_name`            | No       | `""`                        | Service account to attach to the pod               |
 | `timeout_create`                  | No       | `4m`                        | Timeout for creating the statefulset               |
 | `timeout_update`                  | No       | `4m`                        | Timeout for updating the statefulset               |
 | `timeout_delete`                  | No       | `10m`                       | Timeout for deleting the statefulset               |
