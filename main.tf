@@ -44,9 +44,10 @@ resource "kubernetes_stateful_set" "mariadb" {
     delete = var.timeout_delete
   }
   metadata {
-    namespace = var.namespace
-    name      = var.object_prefix
-    labels    = local.common_labels
+    namespace   = var.namespace
+    name        = var.object_prefix
+    labels      = local.common_labels
+    annotations = var.annotations
   }
   wait_for_rollout = var.wait_for_rollout
   spec {
@@ -68,7 +69,8 @@ resource "kubernetes_stateful_set" "mariadb" {
     }
     template {
       metadata {
-        labels = local.selector_labels
+        labels      = local.selector_labels
+        annotations = var.template_annotations
       }
       spec {
         dynamic "security_context" {
@@ -254,13 +256,13 @@ resource "kubernetes_secret" "mariadb" {
 }
 
 resource "random_password" "root_password" {
-  count = local.create_password ? 1 : 0
+  count   = local.create_password ? 1 : 0
   length  = var.password_autocreate_length
   special = var.password_autocreate_special
 }
 
 resource "random_password" "password" {
-  count = local.create_password ? 1 : 0
+  count   = local.create_password ? 1 : 0
   length  = var.password_autocreate_length
   special = var.password_autocreate_special
 }

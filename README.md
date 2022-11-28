@@ -7,7 +7,7 @@ This terraform module deploys a MariaDB statefulset into a kubernetes cluster.
 ```
 module "mariadb" {
   source              = "ballj/mariadb/kubernetes"
-  version             = "~> 1.0"
+  version             = "~> 1.2"
   namespace           = "production"
   object_prefix       = "myapp-db"
   database_name       = "myapp_db"
@@ -34,6 +34,8 @@ module "mariadb" {
 | `timeout_create`                  | No       | `4m`                        | Timeout for creating the statefulset               |
 | `timeout_update`                  | No       | `4m`                        | Timeout for updating the statefulset               |
 | `timeout_delete`                  | No       | `10m`                       | Timeout for deleting the statefulset               |
+| `annotations`                     | No       | `{}`                        | Annotations to add to the statefulset              |
+| `template_annotations`            | No       | `{}`                        | Annotations to add to the template (recreate pods) |
 | `resources_requests_cpu`          | No       | `null`                      | The minimum amount of compute resources required   |
 | `resources_requests_memory`       | No       | `null`                      | The minimum amount of compute resources required   |
 | `resources_limits_cpu`            | No       | `null`                      | The maximum amount of compute resources allowed    |
