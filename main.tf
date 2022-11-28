@@ -18,6 +18,23 @@ locals {
     "app.kubernetes.io/managed-by" = "terraform"
     "app.kubernetes.io/component"  = "mariadb"
   })
+  password_file = anytrue([
+    contains(keys(var.env), "MARIADB_ROOT_PASSWORD_FILE"),
+    contains(keys(var.env), "MARIADB_PASSWORD_FILE"),
+  ]) ? true : false
+  create_password = anytrue([local.password_file, length(var.password_secret) > 0]) ? false : true
+  env_secret = local.password_file ? var.env_secret : flatten([[
+    {
+      name   = "MARIADB_PASSWORD",
+      secret = length(var.password_secret) == 0 ? kubernetes_secret.mariadb[0].metadata[0].name : var.password_secret,
+      key    = var.password_key
+    },
+    {
+      name   = "MARIADB_ROOT_PASSWORD",
+      secret = length(var.password_secret) == 0 ? kubernetes_secret.mariadb[0].metadata[0].name : var.password_secret,
+      key    = var.password_key_root
+    }
+  ], var.env_secret])
 }
 
 resource "kubernetes_stateful_set" "mariadb" {
@@ -86,26 +103,8 @@ resource "kubernetes_stateful_set" "mariadb" {
             value = var.name
           }
           env {
-            name = "MARIADB_ROOT_PASSWORD"
-            value_from {
-              secret_key_ref {
-                name = length(var.password_secret) == 0 ? kubernetes_secret.mariadb[0].metadata[0].name : var.password_secret
-                key  = "mariadb-root-password"
-              }
-            }
-          }
-          env {
             name  = "MARIADB_USER"
             value = var.username
-          }
-          env {
-            name = "MARIADB_PASSWORD"
-            value_from {
-              secret_key_ref {
-                name = length(var.password_secret) == 0 ? kubernetes_secret.mariadb[0].metadata[0].name : var.password_secret
-                key  = "mariadb-password"
-              }
-            }
           }
           dynamic "env" {
             for_each = var.env
@@ -115,7 +114,7 @@ resource "kubernetes_stateful_set" "mariadb" {
             }
           }
           dynamic "env" {
-            for_each = [for env_var in var.env_secret : {
+            for_each = [for env_var in local.env_secret : {
               name   = env_var.name
               secret = env_var.secret
               key    = env_var.key
@@ -242,7 +241,7 @@ resource "kubernetes_service" "mariadb" {
 }
 
 resource "kubernetes_secret" "mariadb" {
-  count = length(var.password_secret) == 0 ? 1 : 0
+  count = local.create_password ? 1 : 0
   metadata {
     namespace = var.namespace
     name      = var.object_prefix
@@ -255,15 +254,15 @@ resource "kubernetes_secret" "mariadb" {
 }
 
 resource "random_password" "root_password" {
-  count   = length(var.password_secret) == 0 ? 1 : 0
-  length  = 16
-  special = false
+  count = local.create_password ? 1 : 0
+  length  = var.password_autocreate_length
+  special = var.password_autocreate_special
 }
 
 resource "random_password" "password" {
-  count   = length(var.password_secret) == 0 ? 1 : 0
-  length  = 16
-  special = false
+  count = local.create_password ? 1 : 0
+  length  = var.password_autocreate_length
+  special = var.password_autocreate_special
 }
 
 resource "kubernetes_config_map" "mariadb" {

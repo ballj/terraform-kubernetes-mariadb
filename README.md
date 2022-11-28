@@ -54,6 +54,8 @@ module "mariadb" {
 | `security_context_uid`            | No       | `1001`                      | Group to run deployment as                         |
 | `env`                             | No       | `{}`                        | Environment variables to add                       |
 | `env_secret`                      | No       | `[]`                        | Environmentvariables to add from secrets           |
+| `password_autocreate_length`      | No       | `16`                        | Length of the automatically generated password     |
+| `password_autocreate_special`     | No       | `false`                     | Use special characters in the generated password   |
 | `readiness_probe_enabled`         | No       | `true`                      | Enable the readyness probe                         |
 | `readiness_probe_initial_delay`   | No       | `10`                        | Initial delay of the probe in seconds              |
 | `readiness_probe_period`          | No       | `10`                        | Period of the probe in seconds                     |
@@ -88,6 +90,13 @@ module "mariadb" {
 
 Persistance is achieved by mounting PVCs into the container. This is achieve by
 providing a PVC name in the `pvc_name` variable.
+
+## Passwords
+
+The module supports 3 password mechanisms:
+1. Pass a file using an injector such as vault-injector and using env variable
+2. Pass the secret name to the variable `password_secret`
+3. Let the module auto generate a secret and output the name
 
 ## Environment Variables
 
