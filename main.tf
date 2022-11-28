@@ -35,6 +35,14 @@ locals {
       key    = var.password_key_root
     }
   ], var.env_secret])
+  healthcheck_script = <<EOF
+  sqlpass="$${MARIADB_ROOT_PASSWORD:-}"
+  if [[ -f "$${MARIADB_ROOT_PASSWORD_FILE:-}" ]]; then
+    sqlpass=$(cat "$MARIADB_ROOT_PASSWORD_FILE")
+  fi
+  mysqladmin status -uroot -p"$${sqlpass}"
+  EOF
+  healthcheck_cmd    = ["/bin/bash", "-ce", local.healthcheck_script]
 }
 
 resource "kubernetes_stateful_set" "mariadb" {
@@ -154,7 +162,7 @@ resource "kubernetes_stateful_set" "mariadb" {
               success_threshold     = var.readiness_probe_success
               failure_threshold     = var.readiness_probe_failure
               exec {
-                command = ["sh", "-c", "mysqladmin status -uroot -p$${MARIADB_ROOT_PASSWORD:-}"]
+                command = local.healthcheck_cmd
               }
             }
           }
@@ -167,7 +175,7 @@ resource "kubernetes_stateful_set" "mariadb" {
               success_threshold     = var.liveness_probe_success
               failure_threshold     = var.liveness_probe_failure
               exec {
-                command = ["sh", "-c", "mysqladmin status -uroot -p$${MARIADB_ROOT_PASSWORD:-}"]
+                command = local.healthcheck_cmd
               }
             }
           }
@@ -180,7 +188,7 @@ resource "kubernetes_stateful_set" "mariadb" {
               success_threshold     = var.startup_probe_success
               failure_threshold     = var.startup_probe_failure
               exec {
-                command = ["sh", "-c", "mysqladmin status -uroot -p$${MARIADB_ROOT_PASSWORD:-}"]
+                command = local.healthcheck_cmd
               }
             }
           }
