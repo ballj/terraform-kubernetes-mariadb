@@ -352,3 +352,15 @@ variable "startup_probe_failure" {
   description = "Minimum consecutive failures for the probe to be considered failed after having succeeded"
   default     = 180
 }
+
+variable "db_character_set" {
+  type        = string
+  description = "Character set to use"
+  default     = "UTF8"
+}
+
+variable "db_collation_server" {
+  type        = string
+  description = "Collation-server to use"
+  default     = "utf8_general_ci"
+}

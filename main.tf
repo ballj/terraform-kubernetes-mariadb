@@ -297,13 +297,13 @@ max_allowed_packet=16M
 bind-address=0.0.0.0
 pid-file=/opt/bitnami/mariadb/tmp/mysqld.pid
 log-error=/opt/bitnami/mariadb/logs/mysqld.log
-character-set-server=UTF8
-collation-server=utf8_general_ci
+character-set-server=${var.db_character_set}
+collation-server=${var.db_collation_server}
 
 [client]
 port=3306
 socket=/opt/bitnami/mariadb/tmp/mysql.sock
-default-character-set=UTF8
+default-character-set=${var.db_character_set}
 plugin_dir=/opt/bitnami/mariadb/plugin
 
 [manager]
@@ -311,8 +311,5 @@ port=3306
 socket=/opt/bitnami/mariadb/tmp/mysql.sock
 pid-file=/opt/bitnami/mariadb/tmp/mysqld.pid"
 EOF
-  }
-
-  binary_data = {
   }
 }
